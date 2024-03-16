@@ -41,4 +41,28 @@ return require('packer').startup(function(use)
 
 	 -- vim fugitive (git)
 	 use "tpope/vim-fugitive"
+
+	 -- lsp zero
+	 use {
+		 'VonHeikemen/lsp-zero.nvim',
+		 branch = 'v3.x',
+		 requires = {
+			 -- LSP Support
+			 {'neovim/nvim-lspconfig'},
+
+			 --- Uncomment the two plugins below if you want to manage the language servers from neovim
+			 {'williamboman/mason.nvim'},
+			 {'williamboman/mason-lspconfig.nvim'},
+
+			 -- Autocompletion
+			 {'hrsh7th/nvim-cmp'},
+			 {'hrsh7th/cmp-nvim-lsp'},
+			 {'hrsh7th/cmp-buffer'},
+			 {'hrsh7th/cmp-path'},
+			 {'saadparwaiz1/cmp_luasnip'},
+			 {'hrsh7th/cmp-nvim-lua'},
+			 {'L3MON4D3/LuaSnip'},
+			 {'rafamadriz/friendly-snippets'}
+		 }
+	 }
  end)
