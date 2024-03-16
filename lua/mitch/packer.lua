@@ -35,4 +35,10 @@ return require('packer').startup(function(use)
 		 branch = "harpoon2",
 		 requires = { {"nvim-lua/plenary.nvim"} }
 	 }
+
+	 -- Undotree
+	 use "mbbill/undotree"
+
+	 -- vim fugitive (git)
+	 use "tpope/vim-fugitive"
  end)
