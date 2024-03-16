@@ -85,7 +85,7 @@ _G.packer_plugins = {
     url = "https://github.com/nvim-lua/plenary.nvim"
   },
   ["rose-pine"] = {
-    config = { "\27LJ\2\n\v\0\3\3\0\0\0\1K\0\1\0¡\5\1\0\4\0\16\0\0216\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0=\3\5\0025\3\6\0=\3\a\0025\3\b\0=\3\t\0024\3\0\0=\3\n\0023\3\v\0=\3\f\2B\0\2\0016\0\r\0009\0\14\0'\2\15\0B\0\2\1K\0\1\0\26colorscheme rose-pine\bcmd\bvim\21before_highlight\0\21highlight_groups\vgroups\1\0\25\14git_merge\tiris\15git_delete\tlove\rgit_text\trose\tlink\tiris\14git_stage\tiris\ah1\tiris\15git_rename\tpine\tinfo\tfoam\18git_untracked\vsubtle\thint\tiris\15git_change\trose\14git_dirty\trose\ah5\tpine\fgit_add\tfoam\vborder\nmuted\nerror\tlove\ah6\tfoam\tnote\tpine\ah4\tgold\ah3\trose\ah2\tfoam\ttodo\trose\npanel\fsurface\15git_ignore\nmuted\twarn\tgold\vstyles\1\0\3\vitalic\2\tbold\2\17transparency\1\venable\1\0\3\15migrations\2\rterminal\2\22legacy_highlights\2\1\0\4\fvariant\tauto\25dim_inactive_windows\1\17dark_variant\tmain%extend_background_behind_borders\2\nsetup\14rose-pine\frequire\0" },
+    config = { "\27LJ\2\n9\0\0\3\0\3\0\0056\0\0\0009\0\1\0'\2\2\0B\0\2\1K\0\1\0\26colorscheme rose-pine\bcmd\bvim\0" },
     loaded = true,
     path = "/Users/mitch/.local/share/nvim/site/pack/packer/start/rose-pine",
     url = "https://github.com/rose-pine/neovim"
@@ -100,7 +100,7 @@ _G.packer_plugins = {
 time([[Defining packer_plugins]], false)
 -- Config for: rose-pine
 time([[Config for rose-pine]], true)
-try_loadstring("\27LJ\2\n\v\0\3\3\0\0\0\1K\0\1\0¡\5\1\0\4\0\16\0\0216\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0=\3\5\0025\3\6\0=\3\a\0025\3\b\0=\3\t\0024\3\0\0=\3\n\0023\3\v\0=\3\f\2B\0\2\0016\0\r\0009\0\14\0'\2\15\0B\0\2\1K\0\1\0\26colorscheme rose-pine\bcmd\bvim\21before_highlight\0\21highlight_groups\vgroups\1\0\25\14git_merge\tiris\15git_delete\tlove\rgit_text\trose\tlink\tiris\14git_stage\tiris\ah1\tiris\15git_rename\tpine\tinfo\tfoam\18git_untracked\vsubtle\thint\tiris\15git_change\trose\14git_dirty\trose\ah5\tpine\fgit_add\tfoam\vborder\nmuted\nerror\tlove\ah6\tfoam\tnote\tpine\ah4\tgold\ah3\trose\ah2\tfoam\ttodo\trose\npanel\fsurface\15git_ignore\nmuted\twarn\tgold\vstyles\1\0\3\vitalic\2\tbold\2\17transparency\1\venable\1\0\3\15migrations\2\rterminal\2\22legacy_highlights\2\1\0\4\fvariant\tauto\25dim_inactive_windows\1\17dark_variant\tmain%extend_background_behind_borders\2\nsetup\14rose-pine\frequire\0", "config", "rose-pine")
+try_loadstring("\27LJ\2\n9\0\0\3\0\3\0\0056\0\0\0009\0\1\0'\2\2\0B\0\2\1K\0\1\0\26colorscheme rose-pine\bcmd\bvim\0", "config", "rose-pine")
 time([[Config for rose-pine]], false)
 
 _G._packer.inside_compile = false
