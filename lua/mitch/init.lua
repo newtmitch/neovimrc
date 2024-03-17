@@ -1,3 +1,3 @@
-require("mitch.remap")
 require("mitch.set")
+require("mitch.remap")
 
