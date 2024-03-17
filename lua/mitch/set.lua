@@ -1,9 +1,6 @@
 -- keep the mouse from moving the cursor
 vim.opt.mouse = ""
 
--- set my leader as space
-vim.g.mapleader = " "
-
 -- disable mouse clicks 
 -- (not sure if this is a good idea but if I don't it moves my mouse when I click in the window)
 vim.opt.mouse = ""
