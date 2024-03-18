@@ -90,9 +90,11 @@ vim.keymap.set('n', '\\', '<Cmd>Neotree toggle<CR>', { noremap = true, silent = 
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
--- center the cursor on C-d and C-u
+-- rsm: center the cursor on C-d/u and n/N for searching
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
+vim.keymap.set('n', 'n', 'nzzzv')
+vim.keymap.set('n', 'N', 'Nzzzv')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
