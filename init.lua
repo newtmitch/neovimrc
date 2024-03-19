@@ -1,3 +1,11 @@
+--
+-- RSM NOTES
+--
+-- Starting point with kickstart.nvim: https://github.com/nvim-lua/kickstart.nvim
+--
+-- TODO:
+-- * keymap for yank to system clipboard vs. vim clipboard
+
 -- set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -17,6 +25,8 @@ vim.g.have_nerd_font = true
 -- You can also add relative line numbers, for help with jumping.
 --  Experiment for yourself to see if you like it!
 -- vim.opt.relativenumber = true
+
+-- block cursor even during editing
 vim.opt.guicursor = ''
 
 vim.opt.number = true
@@ -28,7 +38,7 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
-vim.opt.mouse = 'a'
+vim.opt.mouse = 'v'
 
 -- Don't show the mode, since it's already in status line
 vim.opt.showmode = false
@@ -753,9 +763,14 @@ require('lazy').setup({
 
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    'nvim-treesitter-textobjects',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc', 'query' },
+
+      -- Install parsers synchronously (only applied to `ensure_installed`)
+      sync_install = false,
+
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -763,9 +778,9 @@ require('lazy').setup({
         -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
         --  If you are experiencing weird indenting issues, add the language to
         --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-        additional_vim_regex_highlighting = { 'ruby' },
+        -- additional_vim_regex_highlighting = { 'ruby' },
       },
-      indent = { enable = true, disable = { 'ruby' } },
+      indent = { enable = true },
     },
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
