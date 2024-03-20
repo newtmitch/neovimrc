@@ -75,7 +75,7 @@ vim.opt.splitbelow = true
 -- Sets how neovim will display certain whitespace in the editor.
 --  See `:help 'list'`
 --  and `:help 'listchars'`
-vim.opt.list = true
+vim.opt.list = false
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- Preview substitutions live, as you type!
@@ -85,7 +85,7 @@ vim.opt.inccommand = 'split'
 vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
+vim.opt.scrolloff = 4
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -101,7 +101,7 @@ vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- ----------
--- RSM SHORTCUTS
+-- RSM KEYMAPS
 --
 
 -- ThePrimeagen shortcuts
@@ -110,6 +110,7 @@ vim.keymap.set('n', '<C-d>', '<C-d>zz')
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
 vim.keymap.set('n', 'n', 'nzzzv')
 vim.keymap.set('n', 'N', 'Nzzzv')
+vim.keymap.set('n', 'G', 'Gzz')
 -- rsm: using conform's format instead of the LSP for now
 -- vim.keymap.set('n', '<leader>f', vim.lsp.buf.format)
 -- END ThePrimeagen shortcuts
@@ -173,6 +174,9 @@ if not vim.loop.fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
+--
+-- PLUGINS
+--
 -- [[ Configure and install plugins ]]
 --
 --  To check the current status of your plugins, run
@@ -187,6 +191,8 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+
+  'ryanoasis/vim-devicons',
 
   -- VimBeGood
   -- 'ThePrimeagen/vim-be-good',
@@ -292,6 +298,7 @@ require('lazy').setup({
   -- See `:help gitsigns` to understand what the configuration keys do
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
+    -- TODO: add keymaps for next/prev_hunk and possibly reset_hunk (although that might be dangerous)
     opts = {
       signs = {
         add = { text = '+' },
@@ -454,6 +461,20 @@ require('lazy').setup({
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
+      {
+        'SmiteshP/nvim-navbuddy',
+        dependencies = {
+          'SmiteshP/nvim-navic',
+          'MunifTanjim/nui.nvim',
+        },
+        opts = {
+          lsp = { auto_attach = true },
+        },
+        config = function(_, opts)
+          require('nvim-navbuddy').setup(opts)
+          vim.keymap.set('n', '<leader>nn', '<cmd>Navbuddy<cr>')
+        end,
+      },
 
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
@@ -585,7 +606,7 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         clangd = {},
-        gopls = {},
+        gopls = {}, -- TODO: this isn't providing very good syntax coloring. FIX
         pyright = {},
         rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -642,7 +663,7 @@ require('lazy').setup({
         },
       }
     end,
-  },
+  }, -- lsp configuration and plugins
 
   { -- Autoformat
     'stevearc/conform.nvim',
@@ -796,13 +817,15 @@ require('lazy').setup({
     'folke/tokyonight.nvim',
     priority = 1000, -- make sure to load this before all the other start plugins
     init = function()
+      vim.opt.termguicolors = true
+
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
       vim.cmd.colorscheme 'tokyonight-night'
 
       -- You can configure highlights by doing something like
-      vim.cmd.hi 'Comment gui=none'
+      -- vim.cmd.hi 'Comment gui=none'
     end,
   },
 
@@ -826,6 +849,11 @@ require('lazy').setup({
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
+
+      -- rsm: adding these mini plugins as well
+      require('mini.comment').setup()
+      require('mini.indentscope').setup()
+      require('mini.pairs').setup()
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
@@ -852,7 +880,21 @@ require('lazy').setup({
     'nvim-treesitter-textobjects',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc', 'query' },
+      -- ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc', 'query', 'go' },
+      ensure_installed = 'all',
+
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection = 'gnn', -- set to `false` to disable one of the mappings
+          node_incremental = 'grn',
+          scope_incremental = 'grc',
+          node_decremental = 'grm',
+        },
+      },
+
+      -- TODO: set up folding
+      --   see: https://github.com/nvim-treesitter/nvim-treesitter#folding
 
       -- Install parsers synchronously (only applied to `ensure_installed`)
       sync_install = false,
@@ -867,6 +909,36 @@ require('lazy').setup({
         -- additional_vim_regex_highlighting = { 'ruby' },
       },
       indent = { enable = true },
+
+      textobjects = {
+        move = {
+          enable = true,
+          set_jumps = true, -- whether to set jumps in the jumplist
+          goto_next_start = {
+            [']m'] = '@function.outer',
+            [']]'] = { query = '@class.outer', desc = 'Next class start' },
+            --
+            -- You can use regex matching (i.e. lua pattern) and/or pass a list in a "query" key to group multiple queires.
+            [']o'] = '@loop.*',
+            -- ["]o"] = { query = { "@loop.inner", "@loop.outer" } }
+            --
+            -- You can pass a query group to use query from `queries/<lang>/<query_group>.scm file in your runtime path.
+            -- Below example nvim-treesitter's `locals.scm` and `folds.scm`. They also provide highlights.scm and indent.scm.
+            [']s'] = { query = '@scope', query_group = 'locals', desc = 'Next scope' },
+            [']z'] = { query = '@fold', query_group = 'folds', desc = 'Next fold' },
+          },
+        },
+        -- enable for debugging
+        -- lsp_interop = {
+        --   enable = true,
+        --   border = 'none',
+        --   floating_preview_opts = {},
+        --   peek_definition_code = {
+        --     ['<leader>if'] = '@function.outer',
+        --     ['<leader>tF'] = '@class.outer',
+        --   },
+        -- },
+      },
     },
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
