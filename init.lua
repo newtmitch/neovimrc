@@ -5,6 +5,16 @@
 --
 -- TODO:
 -- * keymap for yank to system clipboard vs. vim clipboard
+-- * sticky block code above current code level - whatever that thing is called
+-- * how to more quickly resize splits without having to hit the shortcut 8M times
+-- * figure out folding
+-- * set up keymaps for gitsigns hunk management
+--
+
+-- vim opens a file at the last cursor location it was left on, both row and column
+-- see ":h restore-cursor"
+vim.cmd [[autocmd BufRead * autocmd FileType <buffer> ++once
+      \ if &ft !~# 'commit\|rebase' && line("'\"") > 1 && line("'\"") <= line("$") | exe 'normal! g`"' | endif]]
 
 -- set <space> as the leader key
 -- See `:help mapleader`
@@ -238,28 +248,61 @@ require('lazy').setup({
       harpoon:setup {}
 
       -- basic telescope configuration
-      local conf = require('telescope.config').values
-      local function toggle_telescope(harpoon_files)
-        local file_paths = {}
-        for _, item in ipairs(harpoon_files.items) do
-          table.insert(file_paths, item.value)
+      local enable_telescope = false
+      if enable_telescope then
+        local conf = require('telescope.config').values
+        local function toggle_telescope(harpoon_files)
+          local file_paths = {}
+          for _, item in ipairs(harpoon_files.items) do
+            table.insert(file_paths, item.value)
+          end
+
+          require('telescope.pickers')
+            .new({}, {
+              prompt_title = 'Harpoon',
+              finder = require('telescope.finders').new_table {
+                results = file_paths,
+              },
+              previewer = conf.file_previewer {},
+              sorter = conf.generic_sorter {},
+            })
+            :find()
         end
 
-        require('telescope.pickers')
-          .new({}, {
-            prompt_title = 'Harpoon',
-            finder = require('telescope.finders').new_table {
-              results = file_paths,
-            },
-            previewer = conf.file_previewer {},
-            sorter = conf.generic_sorter {},
-          })
-          :find()
+        -- set up the keybinding to use telescope
+        vim.keymap.set('n', '<C-h>', function()
+          toggle_telescope(harpoon:list())
+        end, { noremap = true, desc = 'Open harpoon window' })
+      else
+        vim.keymap.set('n', '<C-h>', function()
+          harpoon.ui:toggle_quick_menu(harpoon:list())
+        end)
       end
 
-      vim.keymap.set('n', '<C-f>', function()
-        toggle_telescope(harpoon:list())
-      end, { desc = 'Open harpoon window' })
+      -- harpoon keymaps
+      vim.keymap.set('n', '<leader>ha', function()
+        harpoon:list():append()
+      end, { desc = '[H]arpoon [a]dd', noremap = true })
+      vim.keymap.set('n', '<C-j>', function()
+        harpoon:list():select(1)
+      end)
+      vim.keymap.set('n', '<C-k>', function()
+        harpoon:list():select(2)
+      end)
+      vim.keymap.set('n', '<C-l>', function()
+        harpoon:list():select(3)
+      end)
+      -- vim.keymap.set('n', '<C-s>', function()
+      --   harpoon:list():select(4)
+      -- end)
+
+      -- Toggle previous & next buffers stored within Harpoon list
+      -- vim.keymap.set('n', '<C-S-P>', function()
+      --   harpoon:list():prev()
+      -- end)
+      -- vim.keymap.set('n', '<C-S-N>', function()
+      --   harpoon:list():next()
+      -- end)
     end,
   },
 
@@ -771,7 +814,7 @@ require('lazy').setup({
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
-          ['<C-y>'] = cmp.mapping.confirm { select = true },
+          -- ['<C-y>'] = cmp.mapping.confirm { select = true },
 
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
