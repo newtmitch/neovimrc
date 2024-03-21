@@ -1,0 +1,13 @@
+{
+    // mitch temp debug comment
+    rsmdebug: {
+        prefix: rsmd,
+        body: [
+            // rsm: temp debug,
+            $0
+        ], 
+        luasnip: {
+            autotrigger: true
+        }
+    }
+}

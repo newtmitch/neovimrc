@@ -10,6 +10,9 @@
 -- * figure out folding
 -- * set up keymaps for gitsigns hunk management
 --
+-- Plugins to consider:
+-- * template expander: https://github.com/nvimdev/template.nvim
+--
 
 -- vim opens a file at the last cursor location it was left on, both row and column
 -- see ":h restore-cursor"
@@ -747,6 +750,11 @@ require('lazy').setup({
     },
   },
 
+  -- vim-go
+  {
+    'fatih/vim-go',
+  },
+
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
@@ -767,12 +775,14 @@ require('lazy').setup({
           -- `friendly-snippets` contains a variety of premade snippets.
           --    See the README about individual language/framework/plugin snippets:
           --    https://github.com/rafamadriz/friendly-snippets
-          -- {
-          --   'rafamadriz/friendly-snippets',
-          --   config = function()
-          --     require('luasnip.loaders.from_vscode').lazy_load()
-          --   end,
-          -- },
+          {
+            'rafamadriz/friendly-snippets',
+            config = function()
+              require('luasnip.loaders.from_vscode').lazy_load()
+              -- rsm: wip: this isn't working yet
+              require('luasnip.loaders.from_vscode').lazy_load './luasnip'
+            end,
+          },
         },
       },
       'saadparwaiz1/cmp_luasnip',
@@ -814,7 +824,7 @@ require('lazy').setup({
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
-          -- ['<C-y>'] = cmp.mapping.confirm { select = true },
+          ['<C-y>'] = cmp.mapping.confirm { select = true },
 
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
