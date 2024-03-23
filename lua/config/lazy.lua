@@ -15,6 +15,18 @@ require("lazy").setup({
     -- { import = "lazyvim.plugins.extras.lang.json" },
     -- { import = "lazyvim.plugins.extras.ui.mini-animate" },
     -- import/override with your plugins
+
+    {
+      "nvim-neo-tree/neo-tree.nvim",
+      branch = "v3.x",
+      config = function()
+        require("neo-tree").setup({
+          window = {
+            position = "float",
+          },
+        })
+      end,
+    },
     { import = "plugins" },
   },
   defaults = {
